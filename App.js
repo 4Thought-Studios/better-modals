@@ -1,26 +1,27 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button} from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import Header from 'react-navigation/src/views/Header/Header';
+import React from "react";
+import { StyleSheet, Text, View, Button } from "react-native";
+import { StackNavigator } from "react-navigation";
+import Header from "react-navigation/src/views/Header/Header";
 
-class HomeScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-      title: 'Home',
-      headerRight: <Button title="Modal" onPress={() => navigation.navigate('Modal')}/>
-  });
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Home Screen</Text>
-        <Button title="Go to Detail Screen" onPress={() => this.props.navigation.navigate('Detail')} />
-      </View>
-    );
-  }
-}
+const HomeScreen = () => (
+  <View style={styles.container}>
+    <Text>Home Screen</Text>
+    <Button
+      title="Go to Detail Screen"
+      onPress={() => props.navigation.navigate("Detail")}
+    />
+  </View>
+);
 
+HomeScreen.navigationOptions = ({ navigation }) => ({
+  title: "Home",
+  headerRight: (
+    <Button title="Modal" onPress={() => navigation.navigate("Modal")} />
+  )
+});
 class DetailScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-      title: 'Details',
+    title: "Details"
   });
   render() {
     return (
@@ -35,12 +36,22 @@ class ModalScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Header scene={{index: 0}}
-                navigation={{state: {index: 0}}}
-                getScreenDetails={() => ({options: {
-                  title: 'Modal',
-                  headerRight: (<Button title="Close" onPress={() => this.props.navigation.goBack()} />),
-                }})}/>
+        <Header
+          scene={{ index: 0 }}
+          scenes={[{ index: 0, isActive: true }]}
+          navigation={{ state: { index: 0 } }}
+          getScreenDetails={() => ({
+            options: {
+              title: "Modal",
+              headerRight: (
+                <Button
+                  title="Close"
+                  onPress={() => this.props.navigation.goBack()}
+                />
+              )
+            }
+          })}
+        />
         <View style={styles.container}>
           <Text>Modal Screen</Text>
         </View>
@@ -54,32 +65,35 @@ const MainStack = StackNavigator({
   Home: { screen: HomeScreen },
   Detail: { screen: DetailScreen }
 });
-const ModalStack = StackNavigator({
-  Home: { screen: MainStack },
-  Modal: { screen: ModalScreen },
-}, { 
-  mode: 'modal', 
-  headerMode: 'none',
-});
+const ModalStack = StackNavigator(
+  {
+    Home: { screen: MainStack },
+    Modal: { screen: ModalScreen }
+  },
+  {
+    mode: "modal",
+    headerMode: "none"
+  }
+);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
   },
   headerStyle: {
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     shadowOpacity: 0.1,
     shadowOffset: {
-        height: 3
+      height: 3
     },
     shadowRadius: 0
   },
   headerTitleStyle: {
-      color: 'white'
-  },
+    color: "white"
+  }
 });
 
 export default ModalStack;
